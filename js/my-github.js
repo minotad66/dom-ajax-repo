@@ -1,27 +1,10 @@
-// Write code here to communicate with Github
-const reposPromise = fetch("https://api.github.com/users/minotad66/repos").then(
-  response => response.json()
-);
 
 const repoWrap = document.querySelector("#repos-list");
+const searchPull = document.querySelector("#search");
+const btnPull = document.querySelector("#boton");
 const quantity = document.querySelector("#repos-count");
 
-function datos_web() {
-  reposPromise
-    .then(repos => {
-      const html = repos.map(repo => {
-        return ` <div class="repo">
-        <a href="${repo.html_url}" target="_blank">${repo.name}</a>
-    </div>`;
-      });
-      return html.join("");
-    })
-    .then(htmlList => {
-      repoWrap.innerHTML = htmlList;
-    });
-}
-
-function renderLength() {
+function renderLength(reposPromise) {
   reposPromise
     .then(repos => repos.length)
     .then(length => `<p>Qty: <b> ${length} </b> </p> `)
@@ -30,5 +13,21 @@ function renderLength() {
     });
 }
 
-renderLength();
-datos_web();
+function datos_pull() {
+  const name = searchPull.value;
+  const reposPromise = fetch(
+    `https://api.github.com/users/${name}/repos`
+  ).then(response => response.json());
+  reposPromise.then(repos => {
+    repoWrap.innerHTML = "";
+    for (let repo of repos) {
+        repoWrap.innerHTML += ` <div class="repo">
+                <a href="${repo.html_url}" target="_blank">${repo.name}</a>
+                </div>`;
+      }
+    }
+  );
+  renderLength(reposPromise)
+}
+
+btnPull.addEventListener("click", datos_pull);
