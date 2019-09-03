@@ -18,8 +18,8 @@ function datos_pull() {
       let name = repo.user.login;
       if (name.indexOf(texto) !== -1 && texto != "") {
         repoWrap.innerHTML += ` <div class="repo">
-                <a href="${repo.html_url}" target="_blank">${repo.user.login}</a>
-                </div>`;
+        <a href="${repo.html_url}" target="_blank">${repo.user.login}</a>
+        </div>`;
       }
     }
   });
